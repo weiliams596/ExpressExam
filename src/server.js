@@ -14,13 +14,9 @@ let cars = [
 
 app.get('/api/cars', (req, res) => {
     const param = req.query;
-    let retValues = [];
-    if(param.prototype==null){
-        retValues = cars;
-    }
+    let retValues = [...cars];
     if (param.model) {
         const filteredCars = cars.filter(c => c.model.toLowerCase().includes(param.model.toLowerCase()));
-        console.log(filteredCars.length);
         if (filteredCars.length > 0) {
             retValues = filteredCars;
         }
@@ -38,11 +34,13 @@ app.get('/api/cars', (req, res) => {
         }
     }
     if (param.sort) {
+        console.log(param.sort);
+        console.log(retValues);
         if (param.sort == 'asc') {
             retValues.sort((a, b) => a.id - b.id);
         }
         else {
-            retValues.sort(a, b => b.id - a.id);
+            retValues.sort((a,b)=> b.id - a.id);
         }
     }
     return res.status(200).json(retValues);
